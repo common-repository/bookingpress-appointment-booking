@@ -1,0 +1,19 @@
+{
+    "landingPage": "/wp-admin/admin.php?page=bookingpress_lite_wizard",
+	"features": {
+        "networking": true
+    },
+    "steps": [
+        {
+            "step": "login",
+            "username": "admin",
+            "password": "password"
+        },
+		{
+			"step": "defineWpConfigConsts",
+			"consts": {
+			  "IS_PLAYGROUND_PREVIEW": true
+			}
+		}
+    ]
+}
