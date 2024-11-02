@@ -5,7 +5,7 @@ Donate link: https://bookingpressplugin.com/
 Requires at least: 5.3.0
 Tested up to: 6.6.2
 Requires PHP: 5.6
-Stable tag: 1.1.16
+Stable tag: 1.1.18
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -216,6 +216,12 @@ Please follow the steps for installation:
 
 == Changelog ==
 
+= 1.1.18 =
+* Minor bug fixes
+
+= 1.1.17 =
+* Minor bug fixes
+
 = 1.1.16 =
 * Minor bug fixes
 
@@ -223,9 +229,6 @@ Please follow the steps for installation:
 * Fixed: 'Appointment Date' & 'Created Date' sorting was not working on payments page.
 * Improved: Front-end Date & Time step loading performance
 * Other minor bug fixes
-
-= 1.1.14 =
-* Minor bug fixes
 
 For a complete list of changelogs of earlier versions, please check the website [here](https://www.bookingpressplugin.com/documents/changelog/#free-version)
 

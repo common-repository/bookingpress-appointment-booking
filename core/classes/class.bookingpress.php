@@ -206,9 +206,11 @@ if (! class_exists('BookingPress') ) {
                     global $bookingpress_location_version;
                     if( version_compare( $bookingpress_location_version, '1.6', '<' ) ){
                         $transient_flag = true;
-                    } else if( version_compare( $this->bpa_pro_plugin_version(), '3.9.8', '<') ){
-                        $transient_flag = true;
                     }
+                }
+
+                if( version_compare( $this->bpa_pro_plugin_version(), '3.9.8', '<') ){
+                    $transient_flag = true;
                 }
 
                 if( false == $transient_flag && !empty( $_REQUEST['is_rescheduling_event'] ) && 'true' == $_REQUEST['is_rescheduling_event'] ){
@@ -357,6 +359,12 @@ if (! class_exists('BookingPress') ) {
                 $response['msg']            = esc_html__('Sorry, Your request can not be processed due to security reason.', 'bookingpress-appointment-booking');
                 echo wp_json_encode($response);
                 exit;
+            }
+
+            $is_wizard_saved = get_option( 'bookingpress_lite_wizard_complete' );
+
+            if( 1 == $is_wizard_saved ){
+                return;
             }
 
 			$bookingpress_wizard_data = !empty($_POST['wizard_data']) ? array_map(array( $BookingPress, 'appointment_sanatize_field' ), $_POST['wizard_data']) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -2007,7 +2015,7 @@ if (! class_exists('BookingPress') ) {
         {
             global $bookingpress_version;
             $bookingpress_old_version = get_option('bookingpress_version', true);
-            if (version_compare($bookingpress_old_version, '1.1.16', '<') ) {
+            if (version_compare($bookingpress_old_version, '1.1.18', '<') ) {
                 $bookingpress_load_upgrade_file = BOOKINGPRESS_VIEWS_DIR . '/upgrade_latest_data.php';
                 include $bookingpress_load_upgrade_file;
                 $this->bookingpress_send_anonymous_data_cron();
@@ -3753,7 +3761,11 @@ if (! class_exists('BookingPress') ) {
 
 			$regex = '/(.*?)(<script(\s)id=(\'|\")bookingpress(.*)\-(after|before)(\'|\"))\>(.*?)/';
 
-			if( preg_match( '/bookingpress/', $handle ) || preg_match( '/bookingpress/', $script ) || preg_match('/id=&#039;bookingpress/', $script) ){
+            $handle_arr = ['wcap_vue_js'];
+
+            $handle_arr = apply_filters( 'bookingpress_skip_loader_tags', $handle_arr, $tag, $handle );
+
+			if( preg_match( '/bookingpress/', $handle ) || preg_match( '/bookingpress/', $script ) || preg_match('/id=&#039;bookingpress/', $script) || in_array( $handle, $handle_arr ) ){
                 if( preg_match( '/\=(\'|")/', $tag, $matches_ ) ){
                     if( !empty( $matches_[1] ) ){
                         $tag = str_replace( " src", " data-cfasync=". $matches_[1]."false".$matches_[1]." src", $tag );
